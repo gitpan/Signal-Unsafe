@@ -1,5 +1,10 @@
 Revision history for Signal-Unsafe
 
+0.003     2014-08-22 15:34:17+03:00 Europe/Sofia
+          Fix leak when removing handler
+          Generate correct mask on perl < 5.16
+          Disable fd entry on OpenBSD
+
 0.002     2014-08-20 00:26:52+02:00 Europe/Amsterdam
           Fix various portability issues
 

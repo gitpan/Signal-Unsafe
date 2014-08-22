@@ -42,7 +42,7 @@ static SV* S_make_args(pTHX_ siginfo_t* info) {
 	add_iv(timerid);
 	add_iv(overrun);
 #endif
-#ifdef si_fd
+#if defined(si_fd) && !defined(__OpenBSD__)
 	add_iv(fd);
 	add_iv(band);
 #endif
@@ -141,6 +141,8 @@ static void S_hash_to_sigaction(pTHX_ struct sigaction* ptr, CV** new_handler, H
 
 void S_sigaction_to_hash(pTHX_ struct sigaction* ptr, HV* hash, CV* handler) {
 	dMY_CXT;
+	SV* mask;
+
 	if ((void*)ptr->sa_sigaction == SIG_DFL)
 		hv_stores(hash, "HANDLER", newSVpvs("DEFAULT"));
 	else if ((void*)ptr->sa_sigaction == SIG_IGN)
@@ -148,11 +150,22 @@ void S_sigaction_to_hash(pTHX_ struct sigaction* ptr, HV* hash, CV* handler) {
 	else
 		hv_stores(hash, "HANDLER", newRV_inc((SV*)handler));
 
-	hv_stores(hash, "FLAGS", newSViv(ptr->sa_flags));
-	SV* mask = newSVpvn((const char*)&ptr->sa_mask, sizeof(sigset_t));
+	hv_stores(hash, "FLAGS", newSVuv(ptr->sa_flags));
+#if PERL_VERSION > 15 || PERL_VERSION == 15 && PERL_SUBVERSION > 2
+	mask = newSVpvn((const char*)&ptr->sa_mask, sizeof(sigset_t));
+#else
+	sigset_t* set = PerlMem_malloc(sizeof(sigset_t));
+	Copy(&ptr->sa_mask, set, sigset_t, 1);
+	mask = newSViv(PTR2IV(set));
+#endif
 	hv_stores(hash, "MASK", sv_bless(newRV_noinc(mask), gv_stashpvs("POSIX::SigSet", 0)));
 }
 #define sigaction_to_hash(sig_action, hash, handler) S_sigaction_to_hash(aTHX_ sig_action, hash, handler)
+
+static void remove_handler(pTHX_ void* ptr) {
+	SAVEFREESV(*(SV**)ptr);
+	*(SV**)ptr = NULL;
+}
 
 MODULE = Signal::Unsafe				PACKAGE = Signal::Unsafe
 
@@ -179,10 +192,15 @@ sigaction(sig, newaction, oldaction = 0)
 			hash_to_sigaction(&newact, &new_handler, newaction);
 
 		oldhandler = MY_CXT.handlers[sig];
-		if (newaction && new_handler) {
-			if (MY_CXT.handlers[sig])
-				SvREFCNT_dec(MY_CXT.handlers[sig]);
-			MY_CXT.handlers[sig] = (CV*)SvREFCNT_inc(new_handler);
+		if (newaction) {
+			if (new_handler) {
+				if (MY_CXT.handlers[sig])
+					SvREFCNT_dec(MY_CXT.handlers[sig]);
+				MY_CXT.handlers[sig] = (CV*)SvREFCNT_inc(new_handler);
+			}
+			else {
+				SAVEDESTRUCTOR_X(&remove_handler, MY_CXT.handlers + sig);
+			}
 		}
 		RETVAL = sigaction(sig, newaction ? &newact : NULL, oldaction ? &oldact : NULL);
 

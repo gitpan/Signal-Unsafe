@@ -20,7 +20,7 @@ name: Signal-Unsafe
 provides:
   Signal::Unsafe:
     file: lib/Signal/Unsafe.pm
-    version: '0.002'
+    version: '0.003'
 requires:
   IPC::Signal: '0'
   List::Util: '0'
@@ -32,4 +32,4 @@ requires:
 resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Signal-Unsafe
   repository: git://github.com/Leont/signal-unsafe.git
-version: '0.002'
+version: '0.003'
