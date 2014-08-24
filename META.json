@@ -48,7 +48,7 @@
    "provides" : {
       "Signal::Unsafe" : {
          "file" : "lib/Signal/Unsafe.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
    "release_status" : "stable",
@@ -63,6 +63,6 @@
          "web" : "https://github.com/Leont/signal-unsafe"
       }
    },
-   "version" : "0.003"
+   "version" : "0.004"
 }
 
