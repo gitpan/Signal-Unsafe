@@ -1,5 +1,5 @@
 package Signal::Unsafe;
-$Signal::Unsafe::VERSION = '0.004';
+$Signal::Unsafe::VERSION = '0.005';
 use strict;
 use warnings FATAL => 'all';
 
@@ -134,7 +134,7 @@ Signal::Unsafe - Unsafe signal handlers made convenient
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
