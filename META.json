@@ -4,7 +4,7 @@
       "Leon Timmermans <leont@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.140640",
+   "generated_by" : "Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.142060",
    "license" : [
       "perl_5"
    ],
@@ -26,6 +26,7 @@
       },
       "runtime" : {
          "requires" : {
+            "Exporter" : "5.57",
             "IPC::Signal" : "0",
             "List::Util" : "0",
             "POSIX" : "0",
@@ -48,7 +49,7 @@
    "provides" : {
       "Signal::Unsafe" : {
          "file" : "lib/Signal/Unsafe.pm",
-         "version" : "0.005"
+         "version" : "0.006"
       }
    },
    "release_status" : "stable",
@@ -63,6 +64,6 @@
          "web" : "https://github.com/Leont/signal-unsafe"
       }
    },
-   "version" : "0.005"
+   "version" : "0.006"
 }
 

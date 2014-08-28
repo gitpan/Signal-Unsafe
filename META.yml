@@ -11,7 +11,7 @@ build_requires:
 configure_requires:
   Module::Build::Tiny: '0.037'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.140640'
+generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.142060'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -20,8 +20,9 @@ name: Signal-Unsafe
 provides:
   Signal::Unsafe:
     file: lib/Signal/Unsafe.pm
-    version: '0.005'
+    version: '0.006'
 requires:
+  Exporter: '5.57'
   IPC::Signal: '0'
   List::Util: '0'
   POSIX: '0'
@@ -32,4 +33,4 @@ requires:
 resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Signal-Unsafe
   repository: git://github.com/Leont/signal-unsafe.git
-version: '0.005'
+version: '0.006'

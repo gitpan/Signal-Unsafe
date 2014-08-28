@@ -1,10 +1,13 @@
 package Signal::Unsafe;
-$Signal::Unsafe::VERSION = '0.005';
+$Signal::Unsafe::VERSION = '0.006';
 use strict;
 use warnings FATAL => 'all';
 
 use XSLoader;
 XSLoader::load(__PACKAGE__, Signal::Unsafe->VERSION);
+
+use Exporter 5.57 'import';
+our @EXPORT_OK = qw/sigaction/;
 
 use Config;
 use IPC::Signal qw/sig_num sig_name/;
@@ -134,7 +137,7 @@ Signal::Unsafe - Unsafe signal handlers made convenient
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
